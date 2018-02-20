@@ -3,9 +3,9 @@ from flask import request, make_response
 from app import app
 from config import API_AUTH_TOKEN
 
-from app.models.elastic import Error_handler, ES_handler
+from app.models.elastic import Data_validator, ES_handler
 
-err = Error_handler()
+err = Data_validator()
 esh = ES_handler()
 
 
@@ -28,8 +28,6 @@ def home():
 
 @app.route('/api/add', methods=['POST'])
 def add_element():
-    print(request.json.get("helo"))
-    print(request.headers)
     header = request.headers.get('X-DB-api-auth-token')
     if header != API_AUTH_TOKEN:
         return make_response(jsonify({'error': 'Access denied!'}), 401)
@@ -39,8 +37,6 @@ def add_element():
 
 @app.route('/api/get', methods=['POST'])
 def get_element():
-    print(request.json.get("helo"))
-    print(request.headers)
     header = request.headers.get('X-DB-api-auth-token')
     if header != API_AUTH_TOKEN:
         return make_response(jsonify({'error': 'Access denied!'}), 401)
@@ -50,8 +46,6 @@ def get_element():
 
 @app.route('/api/search', methods=['POST'])
 def search_element():
-    print(request.json.get("helo"))
-    print(request.headers)
     header = request.headers.get('X-DB-api-auth-token')
     if header != API_AUTH_TOKEN:
         return make_response(jsonify({'error': 'Access denied!'}), 401)

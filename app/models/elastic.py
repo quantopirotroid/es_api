@@ -1,13 +1,8 @@
 from easydict import EasyDict as edict
-# from app import es
-# from elasticsearch import Elasticsearch
-# ELASTIC_HOST = '192.168.0.80:9200'
-#
-# es = Elasticsearch(hosts=[ELASTIC_HOST])
 from app import es
 
 
-class Error_handler():
+class Data_validator():
     '''The class objects to find errors in json data.
        Arguments:
            data, type - dict'''
