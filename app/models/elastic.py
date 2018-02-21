@@ -48,12 +48,10 @@ class ES_handler():
         try:
             resp = req_func()
         except TransportError as err:
-            print(err.info)
             try:
                 resp = {'reason': err.info['error']['reason'],
                         'error': err.status_code}
             except KeyError:
-                print(err.info)
                 resp = {'reason': {'found': '%s' % err.info['found']},
                         'error': err.status_code}
         return resp
@@ -69,7 +67,6 @@ class ES_handler():
         if error:
             return error
         data = edict(data)
-        print(data)
 
         def make_request(data):
             def req():
