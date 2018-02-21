@@ -1,5 +1,6 @@
 from easydict import EasyDict as edict
 from app import es
+from elasticsearch import TransportError
 
 
 class Data_validator():
@@ -43,6 +44,20 @@ class ES_handler():
     def __init__(self):
         pass
 
+    def __es_errors(self, req_func):
+        try:
+            resp = req_func()
+        except TransportError as err:
+            print(err.info)
+            try:
+                resp = {'reason': err.info['error']['reason'],
+                        'error': err.status_code}
+            except KeyError:
+                print(err.info)
+                resp = {'reason': {'found': '%s' % err.info['found']},
+                        'error': err.status_code}
+        return resp
+
     def add_data(self, check_error, data=None):
         common_error = check_error.common_check(data)
         if common_error:
@@ -53,14 +68,24 @@ class ES_handler():
         error = check_error.get_add_check(data)
         if error:
             return error
-        # exception expected?
         data = edict(data)
-        # add try except
-        resp = es.create(index=data.index,
-                         doc_type=data.doc_type,
-                         id=data.id,
-                         body=data.body)
-        return resp.get('created')
+        print(data)
+
+        def make_request(data):
+            def req():
+                resp = es.create(index=data.index,
+                                 doc_type=data.doc_type,
+                                 id=data.id,
+                                 body=data.body)
+                return resp
+            return req
+        req = make_request(data)
+        resp = self.__es_errors(req)
+        if resp.get('error'):
+            return resp
+        resp = {'created': '%s' % resp.get('created'),
+                'data': data}
+        return resp
 
     def get_from_id(self, check_error, data=None):
         common_error = check_error.common_check(data)
@@ -69,12 +94,19 @@ class ES_handler():
         error = check_error.get_add_check(data)
         if error:
             return error
-        # exception expected?
         data = edict(data)
-        # add try except
-        resp = es.get(index=data.index,
-                      doc_type=data.doc_type,
-                      id=data.id)
+
+        def make_request(data):
+            def req():
+                resp = es.get(index=data.index,
+                              doc_type=data.doc_type,
+                              id=data.id)
+                return resp
+            return req
+        req = make_request(data)
+        resp = self.__es_errors(req)
+        if resp.get('error'):
+            return resp
         es_fields = ('_index', '_type', '_source', '_id')
         user_fields = ('index', 'doc_type', 'body', 'id')
         user_resp = {u: resp[e] for u, e in zip(user_fields, es_fields)}
@@ -87,7 +119,6 @@ class ES_handler():
         error = check_error.search_check(data)
         if error:
             return error
-        # exception expected?
         data = edict(data)
         body = {
             'query': {
@@ -96,10 +127,18 @@ class ES_handler():
                 }
             }
         }
-        # add try except
-        resp = es.search(index=data.index,
-                         doc_type=data.doc_type,
-                         body=body)
+
+        def make_request(data):
+            def req():
+                resp = es.search(index=data.index,
+                                 doc_type=data.doc_type,
+                                 body=body)
+                return resp
+            return req
+        req = make_request(data)
+        resp = self.__es_errors(req)
+        if resp.get('error'):
+            return resp
         es_fields = ('_index', '_type', '_source', '_id')
         user_fields = ('index', 'doc_type', 'body', 'id')
         hits = resp['hits']['hits']

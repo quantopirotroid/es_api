@@ -9,6 +9,12 @@ err = Data_validator()
 esh = ES_handler()
 
 
+@app.errorhandler(400)
+def bad_request(error):
+    return make_response(jsonify({'error': '400',
+                                  'reason': 'Bad request'}), 400)
+
+
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error': '404',
