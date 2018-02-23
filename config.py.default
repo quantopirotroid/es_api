@@ -1,0 +1,4 @@
+# Rename this file to 'config.py'
+ELASTICSEARCH_HOST = "es:9200"
+# Just example. Put your token here.
+API_AUTH_TOKEN = "gq9Zi0Frmtf1izTF6Xq88DX2wz2ZGMM70gFOzZzTUithCnoUcR"
