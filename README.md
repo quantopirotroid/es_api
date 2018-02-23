@@ -1,61 +1,64 @@
-###Requarements:
+### Requirements:
  * docker-compose
  * docker engine 17.09.0+
 
-##Usage
-Define your server settings in `.env` and `config.py` files
-and use commands bellow:
-`git clone https://github.com/quantopirotroid/es_api`
-`cd es_api`
-`./install.sh`
+### Usage
+Define your server settings in `.env` and `config.py` files and use commands bellow:
 
-#API
+```
+git clone https://github.com/quantopirotroid/es_api
+cd es_api
+./install.sh
+```
+
+### API
 Headers requared:
-    * Content-Type: application/json
-    * X-DB-api-auth-token: very_srong_token - __defined in__ `config.py`
+* Content-Type: application/json
+* X-DB-api-auth-token: very_srong_token - __defined in__ `config.py`
 
-/api/add method __POST__, fomat __json__
+***/api/add*** method __POST__, fomat __json__
 Fields:
-    * "index": "index name"
-    * "doc_type": "document type - just string, defines document"
-    * "id": "documen id"
-    * "body": "document body to insert in index"
+* "index": "index name"
+* "doc_type": "document type - just string, defines document"
+* "id": "documen id"
+* "body": "document body to insert in index"
 Returns json:
-    * fields:
-        * "created": "True"
-	* "data": "body"
-	* "id": "id"
-	* "index": "index"
-	* "doc_type": "doc_type"
+* fields:
+    * "created": "True"
+    * "data": "body"
+    * "id": "id"
+    * "index": "index"
+    * "doc_type": "doc_type"
 
-/api/get method __POST__, fomat __json__
+***/api/get*** method __POST__, fomat __json__
 Fields:
-    * "index": "index name"
-    * "doc_type": "document type - string, defines document"
-    * "id": "documen id"
+* "index": "index name"
+* "doc_type": "document type - string, defines document"
+* "id": "documen id"
 Returns json:
-    * fields:
-	* "body": "requestad data"
-	* "id": "id"
-	* "index": "index"
-	* "doc_type": "doc_type"
+* fields:
+    * "body": "requestad data"
+    * "id": "id"
+    * "index": "index"
+    * "doc_type": "doc_type"
 
-/api/search method __POST__, fomat __json__
+***/api/search*** method __POST__, fomat __json__
 Fields:
-    * "index": "index name"
-    * "doc_type": "document type - string, defines document"
-    * "id": "documen id"
+* "index": "index name"
+* "doc_type": "document type - string, defines document"
+* "id": "documen id"
 Returns json:
-    * fields:
-	* "body": "requestad data"
-	* "id": "id"
-	* "index": "index"
-	* "doc_type": "doc_type"
+* fields:
+    * "body": "requestad data"
+    * "id": "id"
+    * "index": "index"
+    * "doc_type": "doc_type"
 
 
-###For example:
+### For example:
 
-```curl -X POST https://example.com/api/add -d \
+```
+curl -X POST https://example.com/api/add -d \
 '{
     "index": "literature",
     "doc_type": "classical",
@@ -109,21 +112,26 @@ Returns json:
 	     }
     }
 }' -H 'X-DB-api-auth-token: hfgdHHGKbfds765349hbdsH16' -H "Content-Type: application/json" -k | \
-python -c "import sys;import codecs;[sys.stdout.write((codecs.unicode_escape_decode(i)[0])) for i in sys.stdin]```
+python -c "import sys;import codecs;[sys.stdout.write((codecs.unicode_escape_decode(i)[0])) for i in sys.stdin]
+```
 
-```curl -X POST https://example.com/api/get -d \
+```
+curl -X POST https://example.com/api/get -d \
 '{
     "index": "literature",
     "doc_type": "classical",
     "id": "1"
 }' -H 'X-DB-api-auth-token: hfgdHHGKbfds765349hbdsH16' -H "Content-Type: application/json" -k | \
-python -c "import sys;import codecs;[sys.stdout.write((codecs.unicode_escape_decode(i)[0])) for i in sys.stdin]"```
+python -c "import sys;import codecs;[sys.stdout.write((codecs.unicode_escape_decode(i)[0])) for i in sys.stdin]"
+```
 
-```curl -X POST https://example.com/api/search-d \
+```
+curl -X POST https://example.com/api/search-d \
 '{
     "index": "literature",
     "doc_type": "classical",
     "text": "Давыдов"
 }' -H 'X-DB-api-auth-token: hfgdHHGKbfds765349hbdsH16' -H "Content-Type: application/json" -k | \
-python -c "import sys;import codecs;[sys.stdout.write((codecs.unicode_escape_decode(i)[0])) for i in sys.stdin]"```
+python -c "import sys;import codecs;[sys.stdout.write((codecs.unicode_escape_decode(i)[0])) for i in sys.stdin]"
+```
 
