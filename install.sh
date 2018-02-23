@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-cd $(dirname '$0')
+cd $(dirname "$0")
 
 source .env
 SSL_DIR=$NGINX_DIR/conf.d/ssl
