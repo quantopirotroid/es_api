@@ -17,6 +17,7 @@ Headers requared:
 * X-DB-api-auth-token: very_srong_token - __defined in__ `config.py`
 
 ***/api/add*** method __POST__, fomat __json__
+
 Fields:
 * "index": "index name"
 * "doc_type": "document type - just string, defines document"
@@ -31,6 +32,7 @@ Returns json:
     * "doc_type": "doc_type"
 
 ***/api/get*** method __POST__, fomat __json__
+
 Fields:
 * "index": "index name"
 * "doc_type": "document type - string, defines document"
@@ -43,6 +45,7 @@ Returns json:
     * "doc_type": "doc_type"
 
 ***/api/search*** method __POST__, fomat __json__
+
 Fields:
 * "index": "index name"
 * "doc_type": "document type - string, defines document"
