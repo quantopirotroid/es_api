@@ -1,4 +1,5 @@
 ### Requirements:
+ * openssl (for selfsigned certificates)
  * docker-compose
  * docker engine 17.09.0+
 
